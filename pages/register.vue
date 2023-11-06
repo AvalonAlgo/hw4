@@ -20,6 +20,8 @@ const state = reactive({
   password: undefined
 })
 
+const credentialError = ref(false)
+
 const onSubmit = async () => {
 
   const { error } = await supabase.auth.signUp({
@@ -27,14 +29,14 @@ const onSubmit = async () => {
     password: state.password,
   });
   if (error) {
-
+    credentialError.value = true;
   } else {
     const { error } = await supabase.auth.signInWithPassword({
         email: state.email,
         password: state.password,
     });
     if (error) {
-        
+        credentialError.value = true;
     } else {
         navigateTo('/');
     }
@@ -61,6 +63,10 @@ const onSubmit = async () => {
       
         <UButton to="/login" variant="outline" label="Sign In" block />
       </UForm>
+
+      <div v-if="credentialError" class="text-center text-red-500">
+        Invalid credentials!
+      </div>
     </UContainer>
   </div>
 </template>

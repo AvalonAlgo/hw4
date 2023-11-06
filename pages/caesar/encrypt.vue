@@ -44,7 +44,7 @@ const handleReset = () => {
 
 <template>
     <UContainer class="w-full p-8 my-48">
-        <h2 class="text-lg font-medium title-font">Caesar</h2>    
+        <h2 class="text-lg font-medium title-font">Caesar Encrypt</h2>    
         <!-- Encrypt -->
         <div class="flex flex-col space-y-2">
             <UInput required v-model="textInput" type="text" placeholder="Text to encrypt (UTF-8)..." />
