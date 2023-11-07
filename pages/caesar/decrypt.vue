@@ -32,16 +32,15 @@ const handleReset = () => {
   decryptedText.value = '';
 };
 
-const { data: user_id } = await useFetch('/api/me', {
-  headers: useRequestHeaders(['cookie'])
-});
-
-const { pending, data: encryptions } = await useLazyAsyncData('encryptions', () =>
+const { pending, data: encryptions, refresh: getData } = await useLazyAsyncData('encryptions', () =>
   $fetch('/api/encryptions', {
-    method: 'post',
-    body: { usr: user_id.value }
+    headers: useRequestHeaders(['cookie'])
   })
 )
+
+onMounted(() => {
+  getData()
+})
 
 const columns = [
   { key: 'encrypted_text', label: 'Encrypted Text' },
@@ -51,8 +50,16 @@ const columns = [
 </script>
 
 <template>
-  <UContainer class="w-full p-8 my-24">
-    <h2 class="text-lg font-medium title-font">Caesar History</h2>
+  <UContainer class="w-full p-8 my-20">
+    <div class="flex flex-row justify-between">
+      <h2 class="text-lg font-medium title-font">Caesar History</h2>
+      <UButton :loading="pending"
+        :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid' }"
+        label="Refresh"
+        variant="outline"
+        @click="getData"
+      />
+    </div>
 
     <UTable
       :loading="pending"
@@ -63,7 +70,7 @@ const columns = [
     />
   </UContainer>
 
-  <UContainer class="w-full p-8 my-24">
+  <UContainer class="w-full p-8 my-20">
       <h2 class="text-lg font-medium title-font">Caesar Decrypt</h2>    
       <!-- Encrypt -->
       <div class="flex flex-col space-y-2">      
