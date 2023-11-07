@@ -4,11 +4,15 @@ export default defineEventHandler(async (event) => {
     const client = await serverSupabaseClient(event);
     const user = await serverSupabaseUser(event);
 
-    const { data } = await client.from('caesar_cipher')
-        .select('encrypted_text,shift_amount,created_at')
-        .eq('user_id', user.id);
+    const body = await readBody(event);
+
+    const { error } = await client.from('caesar_cipher').insert({
+        user_id: user.id,
+        encrypted_text: body.encrypted_text,
+        shift_amount: body.shift_amount,
+    })
 
     return {
-        encryptions: data
+        error
     }
 })
