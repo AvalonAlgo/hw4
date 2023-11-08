@@ -1,3 +1,3 @@
 <template>
-    <EncryptPanel />
+    <CaesarEncryptPanel />
 </template>

@@ -27,7 +27,7 @@ const handleEncrypt = async () => {
 
   encryptedText.value = Base64.fromUint8Array(byteArray);
 
-  const { error } = await useFetch('/api/encryptions', {
+  const { error } = await useFetch('/api/caesar', {
     method: 'post',
     body: {
         encrypted_text: encryptedText.value,

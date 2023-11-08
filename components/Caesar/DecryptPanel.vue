@@ -31,7 +31,6 @@ const handleReset = () => {
   shiftAmountInput.value = '';
   decryptedText.value = '';
 };
-
 </script>
 
 <template>

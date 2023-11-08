@@ -1,5 +1,4 @@
 <template>
-    <div>
-        
-    </div>
+    <EncryptionsTable method="Vigenere" />
+    <VigenereDecryptPanel />
 </template>

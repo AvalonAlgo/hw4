@@ -1,4 +1,4 @@
 <template>
-    <EncryptionsTable />
-    <DecryptPanel />
+    <EncryptionsTable method="Caesar" />
+    <CaesarDecryptPanel />
 </template>

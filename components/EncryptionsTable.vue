@@ -1,12 +1,26 @@
 <script setup lang="ts">
-const columns = [
-  { key: 'encrypted_text', label: 'Encrypted Text' },
-  { key: 'shift_amount', label: 'Shift Key' },
-  { key: 'created_at', label: 'Created At' },
-];
+const props = defineProps({
+  method: String
+});
+
+const columns = ref([{}]);
+
+if (props.method?.toLowerCase() === 'caesar') {
+  columns.value = [
+    { key: 'encrypted_text', label: 'Encrypted Text' },
+    { key: 'shift_amount', label: 'Shift Key' },
+    { key: 'created_at', label: 'Created At' },
+  ];
+} else {
+  columns.value = [
+    { key: 'encrypted_text', label: 'Encrypted Text' },
+    { key: 'encryption_key', label: 'Encryption Key' },
+    { key: 'created_at', label: 'Created At' },
+  ];
+}
 
 const { pending, data: encryptions, refresh: getData } = await useLazyAsyncData('encryptions', () =>
-  $fetch('/api/encryptions', {
+  $fetch(`/api/${props.method?.toLowerCase()}`, {
     headers: useRequestHeaders(['cookie'])
   })
 );
@@ -19,7 +33,7 @@ onMounted(() => {
 <template>
     <UContainer class="w-full p-8 my-20">
         <div class="flex flex-row justify-between">
-          <h2 class="text-lg font-medium title-font">Caesar History</h2>
+          <h2 class="text-lg font-medium title-font">{{ props.method }} History</h2>
           <UButton :loading="pending"
             :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid' }"
             label="Refresh"
